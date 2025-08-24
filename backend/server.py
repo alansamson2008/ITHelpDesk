@@ -99,7 +99,7 @@ async def initialize_specialists():
         {"name": "Trey Lake", "role": "IT Specialist"},
         {"name": "Frank Pizza", "role": "IT Specialist"},
         {"name": "Chaunice Devine", "role": "IT Specialist"},
-        {"name": "Sr. IT Manager", "role": "Sr. IT Manager"}
+        {"name": "Alan Samson", "role": "Sr. IT Manager"}
     ]
     
     for specialist_data in specialists:

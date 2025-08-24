@@ -6,17 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./com
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
-import { Textarea } from "./components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Badge } from "./components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./components/ui/table";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
-import { TicketIcon, UserIcon, ClipboardListIcon, CheckCircleIcon, ClockIcon, AlertCircleIcon } from "lucide-react";
+import { TicketIcon, UserIcon, ClipboardListIcon, CheckCircleIcon, ClockIcon, AlertCircleIcon, ExternalLinkIcon } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+const MONDAY_FORM_URL = "https://forms.monday.com/forms/a4a0b62dd139cdd5e5976c5f02ff6879?r=use1";
 
 // Dashboard Component
 const Dashboard = () => {
@@ -91,6 +89,10 @@ const Dashboard = () => {
     );
   };
 
+  const openMondayForm = () => {
+    window.open(MONDAY_FORM_URL, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -108,19 +110,23 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <TicketIcon className="w-6 h-6 text-white" />
-              </div>
+              <img 
+                src="https://res.cloudinary.com/monday-platform/image/upload/v1679835967/board_views_images/logos/1679835966727_f4639dd5-bf25-3f92-dae2-9d23763f3027.png" 
+                alt="Renewal by Andersen" 
+                className="h-12 w-auto"
+              />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">IT Support Dashboard</h1>
                 <p className="text-gray-600">Renewal by Andersen</p>
               </div>
             </div>
-            <Link to="/submit">
-              <Button className="bg-green-600 hover:bg-green-700">
-                Submit New Ticket
-              </Button>
-            </Link>
+            <Button 
+              onClick={openMondayForm}
+              className="bg-green-600 hover:bg-green-700 flex items-center space-x-2"
+            >
+              <span>Submit New Ticket</span>
+              <ExternalLinkIcon className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </div>
@@ -279,182 +285,11 @@ const Dashboard = () => {
             </Table>
           </CardContent>
         </Card>
-      </div>
-    </div>
-  );
-};
 
-// Ticket Submission Component
-const TicketSubmission = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    priority: 'medium',
-    requester_name: '',
-    requester_email: '',
-    requester_phone: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      const response = await axios.post(`${API}/tickets`, formData);
-      toast.success(`Ticket ${response.data.ticket_number} created successfully!`);
-      navigate(`/status?ticket=${response.data.ticket_number}`);
-    } catch (error) {
-      console.error('Error creating ticket:', error);
-      toast.error('Failed to create ticket. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleChange = (name, value) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <Link to="/">
-                <Button variant="outline" size="sm">← Dashboard</Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Submit Support Ticket</h1>
-                <p className="text-gray-600">Renewal by Andersen IT Support</p>
-              </div>
-            </div>
-          </div>
+        {/* Footer */}
+        <div className="mt-8 text-center text-sm text-gray-500">
+          Made by ISC IT Department
         </div>
-      </div>
-
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>New Support Request</CardTitle>
-            <CardDescription>
-              Please provide detailed information about your issue to help us assist you better.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="requester_name">Full Name *</Label>
-                  <Input
-                    id="requester_name"
-                    required
-                    value={formData.requester_name}
-                    onChange={(e) => handleChange('requester_name', e.target.value)}
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="requester_email">Email Address *</Label>
-                  <Input
-                    id="requester_email"
-                    type="email"
-                    required
-                    value={formData.requester_email}
-                    onChange={(e) => handleChange('requester_email', e.target.value)}
-                    placeholder="Enter your email"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="requester_phone">Phone Number</Label>
-                <Input
-                  id="requester_phone"
-                  type="tel"
-                  value={formData.requester_phone}
-                  onChange={(e) => handleChange('requester_phone', e.target.value)}
-                  placeholder="Enter your phone number (optional)"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="title">Issue Title *</Label>
-                <Input
-                  id="title"
-                  required
-                  value={formData.title}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  placeholder="Brief description of the issue"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="category">Category *</Label>
-                  <Select onValueChange={(value) => handleChange('category', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select issue category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="hardware">Hardware Issues</SelectItem>
-                      <SelectItem value="software">Software Problems</SelectItem>
-                      <SelectItem value="network">Network/Internet</SelectItem>
-                      <SelectItem value="email">Email Issues</SelectItem>
-                      <SelectItem value="printer">Printer Problems</SelectItem>
-                      <SelectItem value="phone">Phone/Communication</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="priority">Priority *</Label>
-                  <Select onValueChange={(value) => handleChange('priority', value)} defaultValue="medium">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="description">Detailed Description *</Label>
-                <Textarea
-                  id="description"
-                  required
-                  rows={5}
-                  value={formData.description}
-                  onChange={(e) => handleChange('description', e.target.value)}
-                  placeholder="Please provide a detailed description of your issue, including any error messages, steps to reproduce, and what you were trying to accomplish."
-                />
-              </div>
-
-              <div className="flex space-x-4">
-                <Button
-                  type="submit"
-                  disabled={submitting}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  {submitting ? 'Submitting...' : 'Submit Ticket'}
-                </Button>
-                <Link to="/">
-                  <Button type="button" variant="outline">
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
@@ -511,6 +346,10 @@ const TicketStatus = () => {
     }
   };
 
+  const openMondayForm = () => {
+    window.open(MONDAY_FORM_URL, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white shadow-sm border-b">
@@ -520,11 +359,23 @@ const TicketStatus = () => {
               <Link to="/">
                 <Button variant="outline" size="sm">← Dashboard</Button>
               </Link>
+              <img 
+                src="https://res.cloudinary.com/monday-platform/image/upload/v1679835967/board_views_images/logos/1679835966727_f4639dd5-bf25-3f92-dae2-9d23763f3027.png" 
+                alt="Renewal by Andersen" 
+                className="h-10 w-auto"
+              />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Check Ticket Status</h1>
                 <p className="text-gray-600">Renewal by Andersen IT Support</p>
               </div>
             </div>
+            <Button 
+              onClick={openMondayForm}
+              className="bg-green-600 hover:bg-green-700 flex items-center space-x-2"
+            >
+              <span>Submit New Ticket</span>
+              <ExternalLinkIcon className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </div>
@@ -634,6 +485,10 @@ const TicketStatus = () => {
                 </div>
               </div>
             )}
+
+            <div className="mt-8 text-center text-sm text-gray-500">
+              Made by ISC IT Department
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -648,7 +503,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/submit" element={<TicketSubmission />} />
           <Route path="/status" element={<TicketStatus />} />
         </Routes>
       </BrowserRouter>
