@@ -121,13 +121,21 @@ const Dashboard = () => {
                 <p className="text-gray-600">Renewal by Andersen</p>
               </div>
             </div>
-            <Button 
-              onClick={openMondayForm}
-              className="bg-green-600 hover:bg-green-700 flex items-center space-x-2"
-            >
-              <span>Submit New Ticket</span>
-              <ExternalLinkIcon className="w-4 h-4" />
-            </Button>
+            <div className="flex space-x-3">
+              <Link to="/status">
+                <Button variant="outline" className="flex items-center space-x-2">
+                  <ClipboardListIcon className="w-4 h-4" />
+                  <span>Check Ticket Status</span>
+                </Button>
+              </Link>
+              <Button 
+                onClick={openMondayForm}
+                className="bg-green-600 hover:bg-green-700 flex items-center space-x-2"
+              >
+                <span>Submit New Ticket</span>
+                <ExternalLinkIcon className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
