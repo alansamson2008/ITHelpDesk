@@ -1,0 +1,27 @@
+{
+  "name": "renewal-it-tickets",
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://your-backend-url.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ],
+  "env": {
+    "REACT_APP_BACKEND_URL": "https://your-backend-url.onrender.com",
+    "REACT_APP_MONDAY_FORM_URL": "https://forms.monday.com/forms/a4a0b62dd139cdd5e5976c5f02ff6879?r=use1"
+  }
+}

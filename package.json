@@ -1,0 +1,32 @@
+{
+  "name": "renewal-it-ticketing-system",
+  "version": "1.0.0",
+  "description": "IT Ticketing System for Renewal by Andersen",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && uvicorn server:app --reload --port 8001",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "deploy:render": "echo 'Push to GitHub and deploy via Render dashboard'",
+    "deploy:netlify": "cd frontend && npm run build && netlify deploy --prod --dir=build",
+    "test": "echo 'Tests coming soon'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/renewal-it-ticketing.git"
+  },
+  "keywords": [
+    "it-ticketing",
+    "helpdesk",
+    "renewal-by-andersen",
+    "react",
+    "fastapi",
+    "mongodb"
+  ],
+  "author": "ISC IT Department",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

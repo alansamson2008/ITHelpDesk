@@ -1,0 +1,27 @@
+# Render.com deployment configuration
+services:
+  # Backend Service
+  - type: web
+    name: renewal-it-tickets-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGO_URL
+        value: mongodb+srv://username:password@cluster.mongodb.net/
+      - key: DB_NAME
+        value: it_ticketing_system
+      - key: CORS_ORIGINS
+        value: https://renewal-it-tickets-frontend.onrender.com
+    
+  # Frontend Service  
+  - type: web
+    name: renewal-it-tickets-frontend
+    env: node
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://renewal-it-tickets-backend.onrender.com
+      - key: REACT_APP_MONDAY_FORM_URL
+        value: https://forms.monday.com/forms/a4a0b62dd139cdd5e5976c5f02ff6879?r=use1
