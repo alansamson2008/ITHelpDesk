@@ -12,9 +12,10 @@ import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
 import { TicketIcon, UserIcon, ClipboardListIcon, CheckCircleIcon, ClockIcon, AlertCircleIcon, ExternalLinkIcon } from "lucide-react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Configuration - Update these for your intranet deployment
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8001";
 const API = `${BACKEND_URL}/api`;
-const MONDAY_FORM_URL = "https://forms.monday.com/forms/a4a0b62dd139cdd5e5976c5f02ff6879?r=use1";
+const MONDAY_FORM_URL = process.env.REACT_APP_MONDAY_FORM_URL || "https://forms.monday.com/forms/a4a0b62dd139cdd5e5976c5f02ff6879?r=use1";
 
 // Dashboard Component
 const Dashboard = () => {
@@ -286,7 +287,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Footer */}
+        {/* Footer - Company Attribution */}
         <div className="mt-8 text-center text-sm text-gray-500">
           Made by ISC IT Department
         </div>
