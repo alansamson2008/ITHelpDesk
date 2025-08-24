@@ -83,4 +83,12 @@ code {
   body {
     @apply bg-background text-foreground;
     }
+/* kill Emergent watermark */
+#emergent-badge,
+a[href*="emergent.sh"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 }
